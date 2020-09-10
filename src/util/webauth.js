@@ -1,5 +1,6 @@
-const { OAuth2Client } = require('google-auth-library');
-const getData = require('./data');
+import getData from './data';
+import { OAuth2Client } from 'google-auth-library';
+
 /**
  * Create a new OAuth2Client, and go through the OAuth2 content
  * workflow.  Return the full client to the callback.

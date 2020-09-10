@@ -1,5 +1,3 @@
-
-
 const documents = [{
   id: '1uZHaShIWxrbSop8Hh2O_NOCRJag9bnVm6uy9-g7LZs8',
   range: 'Speakers',
@@ -16,7 +14,7 @@ const documents = [{
  * @see https://docs.google.com/spreadsheets/d/1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgvE2upms/edit
  * @param {google.auth.OAuth2} auth The authenticated Google OAuth client.
  */
-module.exports = async (auth) => {
+export default async (auth) => {
   const client = auth;
   const data = {};
   await Promise.all(documents.map(async (doc) => {
