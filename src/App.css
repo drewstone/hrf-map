@@ -1,38 +1,62 @@
-.App {
-  text-align: center;
+body { margin: 0; padding: 0; }
+#map { position: absolute; top: 0; bottom: 0; width: 100%; }
+
+.mapboxgl-popup {
+	max-width: 500px;
+	font: 12px/20px 'Helvetica Neue', Arial, Helvetica, sans-serif;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.mapboxgl-marker {
+	background-image: url('mapbox-icon.png');
+	background-size: cover;
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	cursor: pointer;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+#info {
+	display: block;
+	position: relative;
+	margin: 0px auto;
+	width: 50%;
+	padding: 10px;
+	border: none;
+	border-radius: 3px;
+	font-size: 12px;
+	text-align: center;
+	color: #222;
+	background: #fff;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+.popups {
+	max-width: 50%;
+	overflow-y: scroll;
+	overflow-x: scroll;
+}
+
+ul.menu {
+  background: blue;
+  display:block;
+  list-style-type: none;
+  text-align:center;
+}
+
+li.menu {
+  display: inline-block;
   color: white;
+  font-family: sans-serif;
+  font-weight: 800;
+  font-size: 20px;
+  padding: 10px 15px;;
+  position:relative;
+     -webkit-user-select: none;
+     -moz-user-select: none;    
+     -ms-user-select: none;  
+     user-select: none;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+li.menu:hover{
+  background: #f9a1c6;
+  color: #000;
 }
