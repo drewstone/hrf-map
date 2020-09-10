@@ -1,6 +1,4 @@
-require('dotenv').config();
 import './App.css';
-
 import React from 'react';
 import mapboxgl from 'mapbox-gl';
 import setup from './mapping';
@@ -9,8 +7,26 @@ import polylabel from 'polylabel';
 import getdocs from './util/webauth';
 import createDescription, { topics } from './util/formatPopup';
 const countries = require('./countries.geo.json');
-const credentials = require('./credentials.json');
-const token = require('./token.json');
+
+const credentials = {
+  "installed": {
+    "client_id": process.env.REACT_APP_CLIENT_ID,
+    "project_id": process.env.REACT_APP_PROJECT_ID,
+    "auth_uri": process.env.REACT_APP_AUTH_URI,
+    "token_uri": process.env.REACT_APP_TOKEN_URI,
+    "auth_provider_x509_cert_url": process.env.REACT_APP_AUTH_PROVIDER_X509_CERT_URL,
+    "client_secret": process.env.REACT_APP_CLIENT_SECRET,
+    "redirect_uris": process.env.REACT_APP_REDIRECT_URIS.split(','),
+  }
+}
+
+const token = {
+  "access_token": process.env.REACT_APP_ACCESS_TOKEN,
+  "refresh_token":  process.env.REACT_APP_REFRESH_TOKEN,
+  "scope": process.env.REACT_APP_SCOPE,
+  "token_type": process.env.REACT_APP_TOKEN_TYPE,
+  "expiry_date": Number(process.env.REACT_APP_EXPIRY_DATE),
+};
 
 class App extends React.Component {
   map;
@@ -53,7 +69,7 @@ class App extends React.Component {
         }
       });
     
-      mapboxgl.accessToken = process.env.MAPBOX_TOKEN;
+      mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
       setup(countries, markers);
     });
   }
