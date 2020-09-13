@@ -36,37 +36,40 @@ export const setupRegimeTypes = (map, countries) => {
 };
 
 
-export const setupSpeakerMarkers = (map, markers) => {
+export const setupSpeakerMarkers = (map, speakers) => {
   map.addSource('speakers', {
     'type': 'geojson',
-    'data': {
-      'type': 'FeatureCollection',
-      'features': markers,
-      // 'features': [{
-      //   'type': 'Feature',
-      //   'properties': {
-      //     'description':
-      //     '<strong>Make it Mount Pleasant</strong><p><a href="http://www.mtpleasantdc.com/makeitmtpleasant" target="_blank" title="Opens in a new window">Make it Mount Pleasant</a> is a handmade and vintage market and afternoon of live entertainment and kids activities. 12:00-6:00 p.m.</p>',
-      //     },
-      //   'geometry': {
-      //     'type': 'Point',
-      //     'coordinates': [-77.038659, 38.931567]
-      //   }
-      // }],
+    'data': speakers,
+  });
+
+  // Add an image to use as a custom marker
+  map.loadImage(
+    'https://docs.mapbox.com/mapbox-gl-js/assets/custom_marker.png',
+    function(error, image) {
+      if (error) throw error;
+      map.addImage('custom-marker', image);
+
+      // Add a symbol layer
+      map.addLayer({
+        'id': 'speakers',
+        'type': 'symbol',
+        'source': 'speakers',
+        'layout': {
+          'visibility': 'none',
+          'icon-image': 'custom-marker',
+          // get the title name from the source's "title" property
+          'text-field': ['get', 'name'],
+          'text-font': [
+            'Open Sans Semibold',
+            'Arial Unicode MS Bold'
+          ],
+          'text-offset': [0, 1.25],
+          'text-anchor': 'top',
+        },
+        paint: {
+          "text-color": "#ffffff"
+        }
+      });
     }
-  });
-    // Add a layer showing the places.
-  map.addLayer({
-    'id': 'speakers',
-    'type': 'circle',
-    'source': 'speakers',
-    'layout': {
-      // make layer visible by default
-      'visibility': 'visible'
-    },
-    'paint': {
-      'circle-radius': 8,
-      'circle-color': 'rgba(55,148,179,1)'
-    },
-  });
+  );
 }

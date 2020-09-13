@@ -29,33 +29,50 @@ const token = {
   "expiry_date": Number(process.env.REACT_APP_EXPIRY_DATE),
 };
 
+const isIncident = (speaker, feature) => {
+  if (speaker.topicCountry === feature.properties.formal_en
+    || speaker.topicCountry === feature.properties.admin
+    || speaker.topicCountry === feature.properties.name
+    || speaker.speakerTitle.includes(feature.properties.formal_en)
+    || speaker.speakerTitle.includes(feature.properties.admin)
+    || speaker.speakerTitle.includes(feature.properties.name)) {
+      return true;
+  }
+};
+
 class App extends React.Component {
   map;
 
   componentDidMount() {
-    const markers = {
+    const speakers = {
       type: 'FeatureCollection',
       features: [],
     };
 
     getdocs(credentials, token)
     .then((data) => {
+      console.log(data);
       countries.features = countries.features.map((feature, inx) => {
         const p = polylabel(feature.geometry.coordinates, 0.1);
         if (!isNaN(p[0])) {
-          markers.features.push({
-            type: 'Feature',
-            geometry: {
-              type: 'Point',
-              coordinates: [p[0], p[1]],
-            },
-            properties: {
-              title: 'Mapbox',
-              description: feature.properties.formal_en,
-              'marker-color': '#3bb2d0',
-              'marker-size': 'large',
-              'marker-symbol': 'rocket',
-            }
+          data['Speakers'].forEach(speaker => {
+            if (isIncident(speaker, feature)) {
+                speakers.features.push({
+                  type: 'Feature',
+                  geometry: {
+                    type: 'Point',
+                    coordinates: [p[0], p[1]],
+                  },
+                  properties: {
+                    title: speaker.speakerTitle,
+                    name: speaker.name,
+                    country: feature.properties.name,
+                    description: speaker.description,
+                    region: speaker.topicRegion,
+                    twitter: speaker.twitter,
+                  }
+                });
+              }
           });
         }
 
@@ -71,7 +88,7 @@ class App extends React.Component {
       });
     
       mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
-      setup(countries, markers);
+      setup(countries, speakers);
     });
   }
 
