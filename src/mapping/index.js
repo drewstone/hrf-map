@@ -1,12 +1,13 @@
+/* eslint-disable no-loop-func */
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 import mapboxgl from 'mapbox-gl';
-import addLayers from './layers';
+import { setupRegimeTypes, setupSpeakerMarkers } from './layers';
 
 const setup = (countries,  markers) => {
   var map = new mapboxgl.Map({
     container: 'map',
-    style: 'mapbox://styles/mapbox/outdoors-v11',
+    style: 'mapbox://styles/drewstone/ckezzfdui0vq419t55kxnpvvj',
     center: [0.0, 30.0],
     zoom: 2
   });
@@ -15,10 +16,10 @@ const setup = (countries,  markers) => {
   let currentCoords = null;
 
   map.on('load', function() {
-    addLayers(map, countries,  markers);
+    setupRegimeTypes(map, countries)
+    setupSpeakerMarkers(map, markers)
 
-    // Add zoom and rotation controls to the map.
-    map.addControl(new mapboxgl.NavigationControl());
+    map.on('mousemove', function(e) { currentCoords = e.lngLat.wrap(); });
 
     map.on('mousemove', 'country-fills', function(e) {
       if (e.features.length > 0) {
@@ -64,18 +65,52 @@ const setup = (countries,  markers) => {
       .setMaxWidth()
       .addTo(map);
     });
-
-    map.on('mousemove', function(e) {
-      document.getElementById('info').innerHTML =
-      // e.point is the x, y coordinates of the mousemove event relative
-      // to the top-left corner of the map
-      JSON.stringify(e.point) +
-      '<br />' +
-      // e.lngLat is the longitude, latitude geographical position of the event
-      JSON.stringify(e.lngLat.wrap());
-      currentCoords = e.lngLat.wrap();
-    });
   });
+
+  // enumerate ids of the layers
+  var toggleableLayerIds = ['countries', 'speakers'];
+
+  // set up the corresponding toggle button for each layer
+  for (var i = 0; i < toggleableLayerIds.length; i++) {
+    var id = toggleableLayerIds[i];
+
+    var link = document.createElement('a');
+    link.href = '#';
+    link.className = '';
+    link.textContent = id;
+    
+    link.onclick = function(e) {
+      var clickedLayer = this.textContent;
+      e.preventDefault();
+      e.stopPropagation();
+      const vis = (clickedLayer === 'countries')
+        ? map.getLayoutProperty('country-fills', 'visibility')
+        : map.getLayoutProperty(clickedLayer, 'visibility');
+
+      // toggle layer visibility by changing the layout object's visibility property
+      if (vis === 'visible') {
+        if (clickedLayer === 'countries') {
+          map.setLayoutProperty('country-fills', 'visibility', 'none');
+          map.setLayoutProperty('country-borders', 'visibility', 'none');
+        } else {
+          map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+        }
+        this.className = '';
+      } else {
+        if (clickedLayer === 'countries') {
+          map.setLayoutProperty('country-fills', 'visibility', 'visible');
+          map.setLayoutProperty('country-borders', 'visibility', 'visible');
+        } else {
+          map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
+        }
+        this.className = 'active';
+        
+      }
+    };
+
+    var layers = document.getElementById('menu');
+    layers.appendChild(link);
+  }
 };
 
 export default setup;

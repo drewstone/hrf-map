@@ -5,10 +5,6 @@ export const topics = {
   // 'Notes on Policy': ``,
 }
 
-function getContent(data, ) {
-
-}
-
 function setContent(feature, data) {
   return (menuTitle) => {
     const country = feature.properties.name;

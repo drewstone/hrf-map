@@ -1,3 +1,4 @@
+/* eslint-disable no-loop-func */
 import './App.css';
 import React from 'react';
 import mapboxgl from 'mapbox-gl';
@@ -5,7 +6,7 @@ import setup from './mapping';
 import { getColor } from './mapping/data';
 import polylabel from 'polylabel';
 import getdocs from './util/webauth';
-import createDescription, { topics } from './util/formatPopup';
+import createDescription from './util/formatPopup';
 const countries = require('./countries.geo.json');
 
 const credentials = {
@@ -78,8 +79,8 @@ class App extends React.Component {
     return (
       <div className="App">
         <header className="App-header">
+          <nav id="menu"></nav>
           <div id="map"></div>
-          <pre id="info"></pre>
         </header>
       </div>
     );
