@@ -1,6 +1,9 @@
 /* eslint-disable no-loop-func */
+
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
+import { Dropdown, DropdownButton, ButtonGroup, Accordion, Button } from 'react-bootstrap';
 import mapboxgl from 'mapbox-gl';
 import setup from './mapping';
 import { getColor } from './mapping/data';
@@ -40,6 +43,24 @@ const isIncident = (speaker, feature) => {
   }
 };
 
+const createFeature = (speaker, feature, p) => {
+  return {
+    type: 'Feature',
+    geometry: {
+      type: 'Point',
+      coordinates: [p[0], p[1]],
+    },
+    properties: {
+      title: speaker.speakerTitle,
+      name: speaker.name,
+      country: feature.properties.name,
+      description: speaker.description,
+      region: speaker.topicRegion,
+      twitter: speaker.twitter,
+    }
+  }
+}
+
 class App extends React.Component {
   map;
 
@@ -49,47 +70,39 @@ class App extends React.Component {
       features: [],
     };
 
-    getdocs(credentials, token)
-    .then((data) => {
-      console.log(data);
+    getdocs(credentials, token).then((data) => {
       countries.features = countries.features.map((feature, inx) => {
         const p = polylabel(feature.geometry.coordinates, 0.1);
         if (!isNaN(p[0])) {
           data['Speakers'].forEach(speaker => {
             if (isIncident(speaker, feature)) {
-                speakers.features.push({
-                  type: 'Feature',
-                  geometry: {
-                    type: 'Point',
-                    coordinates: [p[0], p[1]],
-                  },
-                  properties: {
-                    title: speaker.speakerTitle,
-                    name: speaker.name,
-                    country: feature.properties.name,
-                    description: speaker.description,
-                    region: speaker.topicRegion,
-                    twitter: speaker.twitter,
-                  }
-                });
+                speakers.features.push(createFeature(speaker, feature, p));
               }
           });
         }
 
-        return {
-          ...feature,
-          id: inx,
-          properties: {
+        return { ...feature, id: inx, properties: {
             ...feature.properties,
             color: getColor(feature),
-            description: createDescription(feature, data),
           }
         }
       });
     
       mapboxgl.accessToken = process.env.REACT_APP_MAPBOX_TOKEN;
-      setup(countries, speakers);
+      this.map = setup(countries, speakers);
     });
+  }
+
+  handleClick(e, layoutProperty) {
+    const vis = this.map.getLayoutProperty(layoutProperty, 'visibility');
+    // toggle layer visibility by changing the layout object's visibility property
+    if (vis === 'visible') {
+      this.map.setLayoutProperty(layoutProperty, 'visibility', 'none');
+      this.className = '';
+    } else {
+      this.map.setLayoutProperty(layoutProperty, 'visibility', 'visible');
+      this.className = 'active';
+    }
   }
 
   render() {
@@ -98,6 +111,23 @@ class App extends React.Component {
         <header className="App-header">
           <nav id="menu"></nav>
           <div id="map"></div>
+          <DropdownButton as={ButtonGroup} title="Layers" id="bg-vertical-dropdown-3">
+            <Dropdown.Item
+              eventKey="1"
+              onClick={(e) => this.handleClick(e, 'non-democratic-country-fills')}
+            >
+              Regime Types
+            </Dropdown.Item>
+            <Dropdown.Item
+              eventKey="2"
+              onClick={(e) => this.handleClick(e, 'speakers')}
+            >Speakers</Dropdown.Item>
+            <Dropdown.Item
+              eventKey="3"
+              onClick={(e) => this.handleClick(e, 'non-democratic-country-borders')}
+            >Country Borders</Dropdown.Item>
+          </DropdownButton>
+          <div className='map-overlay' id='legend'></div>
         </header>
       </div>
     );

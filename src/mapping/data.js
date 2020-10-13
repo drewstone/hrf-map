@@ -10,7 +10,7 @@ export const getCategory = (feature) => {
 };
 
 export const getColor = (feature) => {
-  if (isDemocratic(feature)) return '#D2EEFC';
+  if (isDemocratic(feature)) return 'none';
   if (isCompAuth(feature)) return '#F6911E';
   if (isFullAuth(feature)) return '#E80689';
   return 'white';
@@ -35,6 +35,18 @@ export const isFullAuth = (feature) => {
     return feature.properties.name_long.includes(country) ||
       country.includes(feature.properties.name_long);
   }) !== -1;
+};
+
+export const getDemocratic = (features) => {
+  return features.filter(feature => {
+    return isDemocratic(feature);
+  });
+};
+
+export const getNonDemocratic = (features) => {
+  return features.filter(feature => {
+    return isFullAuth(feature) || isCompAuth(feature);
+  });
 };
 
 export const papers = {

@@ -1,15 +1,28 @@
+import { getDemocratic, getNonDemocratic } from './data';
+
 export const setupRegimeTypes = (map, countries) => {
-  map.addSource('countries', {
+  map.addSource('democratic-countries', {
     type: 'geojson',
-    data: countries,
+    data: {
+      type: 'FeatureCollection',
+      features: getDemocratic(countries.features),
+    },
   });
-  
+
+  map.addSource('non-democratic-countries', {
+    type: 'geojson',
+    data: {
+      type: 'FeatureCollection',
+      features: getNonDemocratic(countries.features),
+    },
+  });
+
   map.addLayer({
-    'id': 'country-fills',
+    'id': 'non-democratic-country-fills',
     'type': 'fill',
-    'source': 'countries',
+    'source': 'non-democratic-countries',
     'layout': {
-      'visibility': 'none',
+      'visibility': 'visible',
     },
     'paint': {
       'fill-color': ['get', 'color'],
@@ -23,9 +36,9 @@ export const setupRegimeTypes = (map, countries) => {
   });
 
   map.addLayer({
-    'id': 'country-borders',
+    'id': 'non-democratic-country-borders',
     'type': 'line',
-    'source': 'countries',
+    'source': 'non-democratic-countries',
     'layout': {
       'visibility': 'none',
     },

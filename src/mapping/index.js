@@ -21,14 +21,14 @@ const setup = (countries,  markers) => {
 
     map.on('mousemove', function(e) { currentCoords = e.lngLat.wrap(); });
 
-    map.on('mousemove', 'country-fills', function(e) {
+    map.on('mousemove', 'non-democratic-country-fills', function(e) {
       if (e.features.length > 0) {
         if (hoveredStateId) {
-          map.setFeatureState({ source: 'countries', id: hoveredStateId }, { hover: false });
+          map.setFeatureState({ source: 'non-democratic-countries', id: hoveredStateId }, { hover: false });
         }
 
         hoveredStateId = e.features[0].id;
-        map.setFeatureState({ source: 'countries', id: hoveredStateId }, { hover: true });
+        map.setFeatureState({ source: 'non-democratic-countries', id: hoveredStateId }, { hover: true });
       }
 
       map.getCanvas().style.cursor = 'pointer';
@@ -36,10 +36,10 @@ const setup = (countries,  markers) => {
   
     // When the mouse leaves the country-fill layer, update the feature state of the
     // previously hovered feature.
-    map.on('mouseleave', 'country-fills', function() {
+    map.on('mouseleave', 'non-democratic-country-fills', function() {
       map.getCanvas().style.cursor = '';
       if (hoveredStateId) {
-        map.setFeatureState({ source: 'countries', id: hoveredStateId }, { hover: false });
+        map.setFeatureState({ source: 'non-democratic-countries', id: hoveredStateId }, { hover: false });
       }
       hoveredStateId = null;
     }); 
@@ -68,7 +68,12 @@ const setup = (countries,  markers) => {
   });
 
   // enumerate ids of the layers
-  var toggleableLayerIds = ['countries', 'speakers'];
+  var toggleableLayerIds = ['non-democratic-country-fills', 'non-democratic-country-borders', 'speakers'];
+  const toggleDispalyNames = {
+    'non-democratic-country-fills': 'regimes',
+    'non-democratic-country-borders': 'borders',
+    'speakers': 'speakers',
+  }
 
   // set up the corresponding toggle button for each layer
   for (var i = 0; i < toggleableLayerIds.length; i++) {
@@ -76,41 +81,48 @@ const setup = (countries,  markers) => {
 
     var link = document.createElement('a');
     link.href = '#';
-    link.className = '';
+    link.className = (id === 'non-democratic-country-fills') ? 'active' : '';
     link.textContent = id;
-    
+
     link.onclick = function(e) {
       var clickedLayer = this.textContent;
       e.preventDefault();
       e.stopPropagation();
-      const vis = (clickedLayer === 'countries')
-        ? map.getLayoutProperty('country-fills', 'visibility')
-        : map.getLayoutProperty(clickedLayer, 'visibility');
+      const vis = map.getLayoutProperty(clickedLayer, 'visibility');
 
       // toggle layer visibility by changing the layout object's visibility property
       if (vis === 'visible') {
-        if (clickedLayer === 'countries') {
-          map.setLayoutProperty('country-fills', 'visibility', 'none');
-          map.setLayoutProperty('country-borders', 'visibility', 'none');
-        } else {
-          map.setLayoutProperty(clickedLayer, 'visibility', 'none');
-        }
+        map.setLayoutProperty(clickedLayer, 'visibility', 'none');
         this.className = '';
       } else {
-        if (clickedLayer === 'countries') {
-          map.setLayoutProperty('country-fills', 'visibility', 'visible');
-          map.setLayoutProperty('country-borders', 'visibility', 'visible');
-        } else {
-          map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
-        }
+        map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
         this.className = 'active';
-        
       }
     };
 
     var layers = document.getElementById('menu');
     layers.appendChild(link);
   }
+
+  var layers = ['0-10', '10-20', '20-50', '50-100', '100-200', '200-500', '500-1000', '1000+'];
+  var colors = ['#FFEDA0', '#FED976', '#FEB24C', '#FD8D3C', '#FC4E2A', '#E31A1C', '#BD0026', '#800026'];
+  var legend = document.getElementById('legend');
+  for (i = 0; i < layers.length; i++) {
+    var layer = layers[i];
+    var color = colors[i];
+    var item = document.createElement('div');
+    var key = document.createElement('span');
+    key.className = 'legend-key';
+    key.style.backgroundColor = color;
+  
+    var value = document.createElement('span');
+    value.innerHTML = layer;
+    item.appendChild(key);
+    item.appendChild(value);
+    legend.appendChild(item);
+  }
+
+  return map;
 };
 
 export default setup;

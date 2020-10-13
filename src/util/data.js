@@ -7,6 +7,12 @@ const documents = [{
 }, {
   id: '1p1zCkEsOrVEXp9nipEtHkriljapWB5DyS2nase_EqUE',
   range: 'Petitions',
+}, {
+  id: '1kr7XwlXU_ZFAwp9FBVPTDXdRqESuQ-WZ9onJ_XZWoWI',
+  range: 'News Posts',
+}, {
+  id: '1kr7XwlXU_ZFAwp9FBVPTDXdRqESuQ-WZ9onJ_XZWoWI',
+  range: '1-100',
 }]
 
 /**
