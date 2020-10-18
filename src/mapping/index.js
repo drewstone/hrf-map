@@ -2,7 +2,7 @@
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 import mapboxgl from 'mapbox-gl';
-import { setupRegimeTypes, setupSpeakerMarkers } from './layers';
+import { SetupRegimes, SetupSpeakers } from './layers/index';
 
 const setup = (countries,  markers) => {
   var map = new mapboxgl.Map({
@@ -16,8 +16,8 @@ const setup = (countries,  markers) => {
   let currentCoords = null;
 
   map.on('load', function() {
-    setupRegimeTypes(map, countries)
-    setupSpeakerMarkers(map, markers)
+    SetupRegimes(map, countries)
+    SetupSpeakers(map, markers)
 
     map.on('mousemove', function(e) { currentCoords = e.lngLat.wrap(); });
 
@@ -66,61 +66,6 @@ const setup = (countries,  markers) => {
       .addTo(map);
     });
   });
-
-  // enumerate ids of the layers
-  var toggleableLayerIds = ['non-democratic-country-fills', 'non-democratic-country-borders', 'speakers'];
-  const toggleDispalyNames = {
-    'non-democratic-country-fills': 'regimes',
-    'non-democratic-country-borders': 'borders',
-    'speakers': 'speakers',
-  }
-
-  // set up the corresponding toggle button for each layer
-  for (var i = 0; i < toggleableLayerIds.length; i++) {
-    var id = toggleableLayerIds[i];
-
-    var link = document.createElement('a');
-    link.href = '#';
-    link.className = (id === 'non-democratic-country-fills') ? 'active' : '';
-    link.textContent = id;
-
-    link.onclick = function(e) {
-      var clickedLayer = this.textContent;
-      e.preventDefault();
-      e.stopPropagation();
-      const vis = map.getLayoutProperty(clickedLayer, 'visibility');
-
-      // toggle layer visibility by changing the layout object's visibility property
-      if (vis === 'visible') {
-        map.setLayoutProperty(clickedLayer, 'visibility', 'none');
-        this.className = '';
-      } else {
-        map.setLayoutProperty(clickedLayer, 'visibility', 'visible');
-        this.className = 'active';
-      }
-    };
-
-    var layers = document.getElementById('menu');
-    layers.appendChild(link);
-  }
-
-  var layers = ['0-10', '10-20', '20-50', '50-100', '100-200', '200-500', '500-1000', '1000+'];
-  var colors = ['#FFEDA0', '#FED976', '#FEB24C', '#FD8D3C', '#FC4E2A', '#E31A1C', '#BD0026', '#800026'];
-  var legend = document.getElementById('legend');
-  for (i = 0; i < layers.length; i++) {
-    var layer = layers[i];
-    var color = colors[i];
-    var item = document.createElement('div');
-    var key = document.createElement('span');
-    key.className = 'legend-key';
-    key.style.backgroundColor = color;
-  
-    var value = document.createElement('span');
-    value.innerHTML = layer;
-    item.appendChild(key);
-    item.appendChild(value);
-    legend.appendChild(item);
-  }
 
   return map;
 };

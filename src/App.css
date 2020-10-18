@@ -62,20 +62,15 @@ li.menu:hover{
 }
 
 #menu {
-	background: #fff;
 	position: absolute;
 	z-index: 1;
 	bottom: 50px;
 	left: 10px;
-	border-radius: 3px;
-	width: 80px;
-	border: 1px solid rgba(0, 0, 0, 0.4);
+	width: 150px;
 	font-family: 'Open Sans', sans-serif;
 }
 
-#menu a {
-	font-size: 13px;
-	color: #404040;
+#menu button {
 	display: block;
 	margin: 0;
 	padding: 0;
@@ -85,22 +80,23 @@ li.menu:hover{
 	text-align: center;
 }
 
-#menu a:last-child {
+#menu button:last-child {
 	border: none;
 }
 
-#menu a:hover {
-	background-color: #f8f8f8;
+#menu button:hover {
+	background-color: #ffffff93;
 	color: #404040;
 }
 
-#menu a.active {
-	background-color: #3887be;
-	color: #ffffff;
+#menu button.active {
+	background-color: #39a6ff;
 }
 
-#menu a.active:hover {
-	background: #3074a4;
+#menu button:focus {
+  outline: none;
+	box-shadow: none;
+	background-color: none;
 }
 
 .map-overlay {
@@ -112,21 +108,25 @@ li.menu:hover{
 	font-family: Arial, sans-serif;
 	overflow: auto;
 	border-radius: 3px;
-  }
+}
 
-  #legend {
+#legend {
 	padding: 10px;
 	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 	line-height: 18px;
-	height: 150px;
 	margin-bottom: 40px;
-	width: 100px;
-  }
+	width: 150px;
+}
   
-  .legend-key {
+.legend-key {
 	display: inline-block;
 	border-radius: 20%;
 	width: 10px;
 	height: 10px;
 	margin-right: 5px;
-  }
+}
+
+.sub-menu {
+	display: flex;
+  flex-direction: column;
+}
