@@ -137,6 +137,11 @@ class App extends React.Component {
                 onClick={(e) => this.handleClick(e, 'non-democratic-country-fills')}>
                 Regime Types
               </Button>
+              <Button
+                variant="dark"
+                onClick={(e) => this.handleClick(e, 'non-democratic-country-borders')}>
+                Country Borders
+              </Button>
             </div>
             <Accordion className="sub-menu">
               <Accordion.Toggle as={Button} variant="dark" eventKey="0">
