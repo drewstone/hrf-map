@@ -133,18 +133,18 @@ class App extends React.Component {
             <div className="sub-menu">
               <Button
                 className="active"
-                variant="dark"
+                variant="link"
                 onClick={(e) => this.handleClick(e, 'non-democratic-country-fills')}>
                 Regime Types
               </Button>
               <Button
-                variant="dark"
+                variant="link"
                 onClick={(e) => this.handleClick(e, 'non-democratic-country-borders')}>
                 Country Borders
               </Button>
             </div>
             <Accordion className="sub-menu">
-              <Accordion.Toggle as={Button} variant="dark" eventKey="0">
+              <Accordion.Toggle as={Button} variant="link" eventKey="0">
                 Public Education
               </Accordion.Toggle>
               <Accordion.Collapse eventKey="0">
@@ -153,7 +153,7 @@ class App extends React.Component {
                   <Button>Student Events</Button>
                 </div>
               </Accordion.Collapse>
-              <Accordion.Toggle as={Button} variant="dark" eventKey="1">
+              <Accordion.Toggle as={Button} variant="link" eventKey="1">
                 Advocacy
               </Accordion.Toggle>
               <Accordion.Collapse eventKey="1">
@@ -163,7 +163,7 @@ class App extends React.Component {
                   <Button>OFF Speakers</Button>
                 </div>
               </Accordion.Collapse>
-              <Accordion.Toggle as={Button} variant="dark" eventKey="2">
+              <Accordion.Toggle as={Button} variant="link" eventKey="2">
                 Policy Research
               </Accordion.Toggle>
               <Accordion.Collapse eventKey="2">
@@ -173,7 +173,7 @@ class App extends React.Component {
                   <Button>Regime Analyses</Button>
                 </div>
               </Accordion.Collapse>
-              <Accordion.Toggle as={Button} variant="dark" eventKey="3">
+              <Accordion.Toggle as={Button} variant="link" eventKey="3">
                 Direct Support
               </Accordion.Toggle>
               <Accordion.Collapse eventKey="3">
