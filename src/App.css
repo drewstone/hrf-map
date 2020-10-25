@@ -129,3 +129,7 @@ li.menu:hover{
 	display: flex;
   flex-direction: column;
 }
+
+.mapboxgl-popup-close-button {
+  display: none;
+}

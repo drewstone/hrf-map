@@ -1,5 +1,7 @@
-import regimes from './regimes';
-import speakers from './speakers';
+import SetupRegimes from './regimes';
+import SetupSpeakers from './speakers';
 
-export const SetupRegimes = regimes;
-export const SetupSpeakers = speakers;
+export default (map, countries, speakers) => {
+	SetupRegimes(map, countries)
+	SetupSpeakers(map, speakers)
+}
