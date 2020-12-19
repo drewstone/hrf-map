@@ -56,6 +56,8 @@ function App() {
     }
   };
 
+  const filterCountries = (e) => {};
+
   return (
     <div className="App">
       <header className="App-header">
@@ -71,6 +73,11 @@ function App() {
               variant="link"
               onClick={(e) => handleClick(e, 'non-democratic-country-borders')}>
               Country Borders
+            </Button>
+            <Button
+              variant="link"
+              onClick={(e) => filterCountries(e, 'russia')}>
+              Russia
             </Button>
           </div>
           <Accordion className="sub-menu">
