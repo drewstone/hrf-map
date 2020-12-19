@@ -8,6 +8,11 @@ Contributions are welcomed as new issues or PRs. Ideas for contributions or futu
 - Add designs for buttons and legends on the map.
 - Add new interactions to improve the user experience.
 
+Currently there are a number of unimplemented buttons and layers for data.
+- We are pulling in data for a variety of spreadsheets but not creating proper layers for them.
+- We have a number of buttons shown on our menu of the map, but they are not interactive yet.
+- We could improve the design of the legends and overall buttons shown.
+
 ## Data
 The data being loaded and displayed on the map starts with HRF's regime classification for countries and displays countries that fall into the authoritarian and competitive-authoritarian regimes.
 
@@ -19,6 +24,8 @@ Data from around HRF's organisation is being pulled in from Google Spreadsheets 
 - Reports and legal work
 - Events
 - Overviews of projects such as the Flash drives for Freedom
+
+The datasets currently being accessed can be found in `src/util/data`. While we are pulling this data in, there is currently no formatting of the data into layers for the map for many of the datasets.
 
 ## Credentials
 
